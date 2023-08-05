@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const titleScreen = document.querySelector('.title-screen');
+  const playBtn = document.getElementById('play-btn');
+  const gameContainer = document.querySelector('.game-container');
   const grid = document.querySelector('.grid');
   const player = document.getElementById('player');
   const powerDisplay = document.getElementById('power');
+  const clockDisplay = document.getElementById('time');
 
   let gridSize = 5; // Define gridSize here
   const rooms = [];
@@ -12,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let playerPosition = { x: 0, y: 0 };
   let power = 100;
   let gameLoop;
+  let clockTime = 0; // Clock in seconds, starts at 12 AM
 
   function createRooms() {
     for (let y = 0; y < gridSize; y++) {
@@ -90,6 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function startGame() {
+    // Hide the title screen and show the game container
+    titleScreen.style.display = 'none';
+    gameContainer.style.display = 'block';
+
     createRooms();
 
     // Add animatronics to the game (you can have more than one)
@@ -99,8 +108,22 @@ document.addEventListener('DOMContentLoaded', () => {
       moveAnimatronics();
       updateGame();
       render();
+      updateClock(); // Update the clock
       drainPower(); // Power drains every game loop iteration
     }, 1000); // Run the game loop every second
+  }
+
+  // Function to update the clock display
+  function updateClock() {
+    const hour = Math.floor(clockTime / 30) % 12;
+    const minute = clockTime % 30 === 0 ? '00' : '30';
+    const ampm = Math.floor(clockTime / 360) % 2 === 0 ? 'AM' : 'PM';
+    clockDisplay.textContent = `${hour}:${minute} ${ampm}`;
+    clockTime++;
+    if (clockTime >= 12 * 30) {
+      // End the game at 6 AM
+      endGame();
+    }
   }
 
   function endGame() {
@@ -108,24 +131,5 @@ document.addEventListener('DOMContentLoaded', () => {
     alert("Game Over!");
   }
 
-  function handleKeyPress(event) {
-    const key = event.key.toLowerCase();
-
-    switch (key) {
-      case 'o': // Open/close door (press 'o' key)
-        toggleDoor(playerPosition.x, playerPosition.y);
-        drainPower(); // Door operation consumes power
-        break;
-      case 'l': // Toggle light (press 'l' key)
-        toggleLight(playerPosition.x, playerPosition.y);
-        drainPower(); // Light operation consumes power
-        break;
-      default:
-        break;
-    }
-  }
-
-  document.addEventListener('keydown', handleKeyPress);
-
-  startGame();
+  playBtn.addEventListener('click', startGame);
 });
