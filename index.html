@@ -1,26 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wyatt's Family Diner</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <!-- Add the favicon code here (if you have one) -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="title-screen">
     <h1>Wyatt's Family Diner</h1>
     <button id="play-btn">Play</button>
   </div>
-  <div class="game-container" style="display: none;">
-    <div class="grid">
-      <!-- Rooms (divs with class "room") will be generated dynamically using JavaScript -->
-    </div>
-    <div class="player" id="player"></div>
-    <div class="power-display">Power: <span id="power">100</span></div>
-    <div class="clock">Time: <span id="time">12:00 AM</span></div>
+
+  <div class="game-container">
+    <div class="grid"></div>
+    <div id="player"></div>
   </div>
+
+  <div class="hud">
+    <div class="info">
+      <span>Power: <span id="power">100</span></span>
+      <span id="time">12:00 AM</span>
+    </div>
+  </div>
+
   <script src="game.js"></script>
-  <script>
-    // Add the JavaScript code here (game.js)
-    // You can paste the entire JavaScript code provided in the previous response right here.
-  </script>
 </body>
 </html>
