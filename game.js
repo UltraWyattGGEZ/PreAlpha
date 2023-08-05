@@ -3,12 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const player = document.getElementById('player');
   const powerDisplay = document.getElementById('power');
 
+  let gridSize = 5; // Define gridSize here
   const rooms = [];
   const animatronics = [];
   const doors = Array(gridSize * gridSize).fill(false);
   const lights = Array(gridSize * gridSize).fill(false);
 
-  const gridSize = 5;
   let playerPosition = { x: 0, y: 0 };
   let power = 100;
   let gameLoop;
