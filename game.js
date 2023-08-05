@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let power = 100;
   let gameLoop;
   let clockTime = 0; // Clock in seconds, starts at 12 AM
+  let isGameOver = false;
 
   function createRooms() {
     for (let y = 0; y < gridSize; y++) {
@@ -55,7 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateGame() {
-    // ... (Add game logic, collisions, etc. as needed)
+    // Check collision with animatronics
+    animatronics.forEach((animatronic) => {
+      if (playerPosition.x === animatronic.x && playerPosition.y === animatronic.y) {
+        endGame(false); // Game over, the animatronic reached the player
+      }
+    });
+
+    // ... (Add other game logic, collisions, etc. as needed)
   }
 
   function render() {
@@ -90,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     power -= 1;
     updatePowerDisplay();
     if (power <= 0) {
-      endGame();
+      endGame(false); // Game over, power ran out
     }
   }
 
@@ -123,13 +131,18 @@ document.addEventListener('DOMContentLoaded', () => {
     clockTime++;
     if (clockTime >= 12 * 30) {
       // End the game at 6 AM
-      endGame();
+      endGame(true); // You survived
     }
   }
 
-  function endGame() {
+  function endGame(survived) {
     clearInterval(gameLoop);
-    alert("Game Over!");
+    isGameOver = true;
+    if (survived) {
+      alert("You Survived!");
+    } else {
+      alert("Game Over!");
+    }
   }
 
   playBtn.addEventListener('click', startGame);
