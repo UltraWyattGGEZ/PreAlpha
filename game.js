@@ -101,8 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createRooms();
 
-    // Add animatronics to the game (you can have more than one)
-    animatronics.push({ x: 1, y: 1 }); // Add more as needed
+    // Add animatronics to the game
+    animatronics.push({ x: 1, y: 1 });
+    animatronics.push({ x: 3, y: 2 });
 
     gameLoop = setInterval(() => {
       moveAnimatronics();
