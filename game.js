@@ -1,9 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.grid');
   const player = document.getElementById('player');
+  const powerDisplay = document.getElementById('power');
 
   const rooms = [];
   const animatronics = [];
+  const doors = Array(gridSize * gridSize).fill(false);
+  const lights = Array(gridSize * gridSize).fill(false);
+
   const gridSize = 5;
   let playerPosition = { x: 0, y: 0 };
   let power = 100;
@@ -28,6 +32,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function moveAnimatronics() {
     animatronics.forEach((animatronic) => {
+      if (isDoorOpen(animatronic.x, animatronic.y)) {
+        // If the door is open, animatronic cannot move
+        return;
+      }
+
+      if (!isLightOn(animatronic.x, animatronic.y)) {
+        // If the light is off, animatronic is hidden
+        return;
+      }
+
+      // Otherwise, move the animatronic
       const position = getRandomPosition();
       animatronic.x = position.x;
       animatronic.y = position.y;
@@ -35,20 +50,43 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateGame() {
-    // Update game state, check for collisions, etc.
-    // This part of the code will be more complex depending on the game logic.
-    // For simplicity, I'm leaving it blank in this example.
-    power -= 1; // Decrease power over time as an example.
-    // You should implement logic to check for animatronic-player collisions and other interactions.
-    if (power <= 0) {
-      endGame();
-    }
+    // ... (Add game logic, collisions, etc. as needed)
   }
 
   function render() {
-    // Update the game's visual representation based on the game state.
-    // This will include updating the positions of animatronics, doors, lights, and the player.
-    // For simplicity, I'm leaving it blank in this example.
+    // ... (Update the visual representation of the game state)
+  }
+
+  function toggleDoor(x, y) {
+    const index = y * gridSize + x;
+    doors[index] = !doors[index];
+  }
+
+  function toggleLight(x, y) {
+    const index = y * gridSize + x;
+    lights[index] = !lights[index];
+  }
+
+  function isDoorOpen(x, y) {
+    const index = y * gridSize + x;
+    return doors[index];
+  }
+
+  function isLightOn(x, y) {
+    const index = y * gridSize + x;
+    return lights[index];
+  }
+
+  function updatePowerDisplay() {
+    powerDisplay.textContent = power;
+  }
+
+  function drainPower() {
+    power -= 1;
+    updatePowerDisplay();
+    if (power <= 0) {
+      endGame();
+    }
   }
 
   function startGame() {
@@ -61,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       moveAnimatronics();
       updateGame();
       render();
+      drainPower(); // Power drains every game loop iteration
     }, 1000); // Run the game loop every second
   }
 
@@ -69,8 +108,24 @@ document.addEventListener('DOMContentLoaded', () => {
     alert("Game Over!");
   }
 
-  // Game controls, you can use keyboard events or buttons to trigger these actions
-  // Door and light control functions go here
+  function handleKeyPress(event) {
+    const key = event.key.toLowerCase();
+
+    switch (key) {
+      case 'o': // Open/close door (press 'o' key)
+        toggleDoor(playerPosition.x, playerPosition.y);
+        drainPower(); // Door operation consumes power
+        break;
+      case 'l': // Toggle light (press 'l' key)
+        toggleLight(playerPosition.x, playerPosition.y);
+        drainPower(); // Light operation consumes power
+        break;
+      default:
+        break;
+    }
+  }
+
+  document.addEventListener('keydown', handleKeyPress);
 
   startGame();
 });
