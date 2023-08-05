@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+.game-container {
+  position: relative;
+  width: 800px;
+  height: 600px;
+  border: 2px solid black;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  width: 100%;
+  height: 100%;
+}
+
+.room {
+  border: 1px solid #888;
+  position: relative;
+}
+
+.player {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: red;
+}
